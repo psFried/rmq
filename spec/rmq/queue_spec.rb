@@ -77,7 +77,16 @@ describe RMQ::Queue do
       expect(messages[2].payload).to eq('To Love' + timestamp)
 
       expect(@queue.depth).to eq(3)
+    end
 
+  end
+
+  context 'dealing with headers' do
+
+    it 'should put a message with headers onto the queue' do
+      body = "test body"
+      headers = {'key1'=> 'val1', 'key2' => 'val2'}
+      @queue.put_message(body)
     end
 
   end
