@@ -7,25 +7,25 @@ module RMQ
       MQPMO_SYNCPOINT   = 0x00000002
 
       layout  :StrucId, [:char, 4],
-        :Version, :long,
-        :Options, :long,
-        :Timeout, :long,
-        :Context, :long,
-        :KnownDestCount, :long,
-        :UnknownDestCount, :long,
-        :InvalidDestCount, :long,
+        :Version, :int32,
+        :Options, :int32,
+        :Timeout, :int32,
+        :Context, :pointer,
+        :KnownDestCount, :int32,
+        :UnknownDestCount, :int32,
+        :InvalidDestCount, :int32,
         :ResolvedQName, [:char, 48],
         :ResolvedQMgrName, [:char, 48],
-        :RecsPresent, :long,
-        :PutMsgRecFields, :long,
-        :PutMsgRecOffset, :long,
-        :ResponseRecOffset, :long,
+        :RecsPresent, :int32,
+        :PutMsgRecFields, :int32,
+        :PutMsgRecOffset, :int32,
+        :ResponseRecOffset, :int32,
         :PutMsgRecPtr, :pointer,
         :ResponseRecPtr, :pointer,
         :OriginalMsgHandle, :int64,
         :NewMsgHandle, :int64,
-        :Action, :long,
-        :PubLevel, :long
+        :Action, :int32,
+        :PubLevel, :int32
     end
   end
 end

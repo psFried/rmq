@@ -4,6 +4,7 @@ module RMQ
     class ObjectDescriptor < FFI::Struct
       MQOD_STRUC_ID             = "OD  "
       MQOD_VERSION_1            = 1
+      MQOD_VERSION_4            = 4
 
       # Object Types
       MQOT_NONE       = 0
@@ -22,18 +23,18 @@ module RMQ
       
       
       layout  :StrucId, [:char, 4],
-        :Version, :long,
-        :ObjectType, :long,
+        :Version, :int32,
+        :ObjectType, :int32,
         :ObjectName, [:char, 48],
         :ObjectQMgrName, [:char, 48],
         :DynamicQName, [:char, 48],
         :AlternateUserId, [:char, 12],
-        :RecsPresent, :long,
-        :KnownDestCount, :long,
-        :UnknownDestCount, :long,
-        :InvalidDestCount, :long,
-        :ObjectRecOffset, :long,
-        :ResponseRecOffset, :long,
+        :RecsPresent, :int32,
+        :KnownDestCount, :int32,
+        :UnknownDestCount, :int32,
+        :InvalidDestCount, :int32,
+        :ObjectRecOffset, :int32,
+        :ResponseRecOffset, :int32,
         :ObjectRecPtr, :pointer,
         :ResponseRecPtr, :pointer
     end

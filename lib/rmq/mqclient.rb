@@ -40,7 +40,7 @@ module RMQ
 
     # mqCreateBag (Options, &Bag, &CompCode, &Reason)
     attach_function :mqai_create_bag, :mqCreateBag,
-                    [:long, :pointer, :pointer, :pointer], :void
+                    [:int32, :pointer, :pointer, :pointer], :void
 
     # mqAddString (hBag, Selector, BufferLength, Buffer, &CompCode, &Reason)
     attach_function :mqai_add_string, :mqAddString,
@@ -101,6 +101,9 @@ module RMQ
       responsebag_handle_ptr.read_long
     end
 
+    # mqAddString (hBag, Selector, BufferLength, Buffer, &CompCode, &Reason)
+    # attach_function :mqai_add_string, :mqAddString,
+    #                 [:pointer, :int32, :int32, :string, :pointer, :pointer], :void
     def add_string_to_bag(bag_handle, selector, value)
       completion_code_ptr = FFI::MemoryPointer.new :long
       reason_code_ptr = FFI::MemoryPointer.new :long
@@ -199,8 +202,10 @@ module RMQ
       object_descriptor[:ObjectType] = MQClient::ObjectDescriptor::MQOT_Q
       object_descriptor[:ObjectName] = queue_name
 
+
+
       completion_code_ptr = FFI::MemoryPointer.new :long
-      reason_code_ptr = FFI::MemoryPointer.new :long
+      reason_code_ptr = FFI::MemoryPointer.new :long, 1, true
       queue_handle_ptr = FFI::MemoryPointer.new :long
 
       mqopen(connection_handle, object_descriptor, options, queue_handle_ptr,

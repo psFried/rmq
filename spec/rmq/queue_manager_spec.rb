@@ -29,12 +29,12 @@ describe RMQ::QueueManager do
 
   it "should create a new queue" do
     @qm = RMQ::QueueManager::connect(SpecHelper::DATA[:queue_manager])
-    queue = @qm.create_queue(SAMPLE_QUEUE)
+    queue = @qm.create_queue("SAMPLE.QUEUE")
     queue.should_not be_nil
 
-    @qm.find_queue(SAMPLE_QUEUE).should_not be_nil
+    @qm.find_queue("SAMPLE.QUEUE").should_not be_nil
 
-    @qm.delete_queue(SAMPLE_QUEUE)
+    @qm.delete_queue("SAMPLE.QUEUE")
   end
 
   it "should find an existing queue" do
