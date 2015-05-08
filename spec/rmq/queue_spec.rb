@@ -61,4 +61,14 @@ describe RMQ::Queue do
     lambda { @queue.find_message_by_id(message_id, {:timeout => 2}) }.should raise_error(RMQ::RMQTimeOutError)
   end
 
+  context 'dealing with headers' do
+
+    it 'should put a message with headers onto the queue' do
+      body = "test body"
+      headers = {'key1'=> 'val1', 'key2' => 'val2'}
+      @queue.put_message(body)
+      
+    end
+  end
+
 end
