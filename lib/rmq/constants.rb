@@ -1480,6 +1480,9 @@ module RMQ
     MQOO_NO_READ_AHEAD            = 0x00080000
     MQOO_READ_AHEAD               = 0x00100000
 
+    #Get Message Options
+    MQGMO_BROWSE_NEXT             = 0x00000020
+
     # Close Options
     MQCO_IMMEDIATE    = 0x00000000
     MQCO_NONE         = 0x00000000
