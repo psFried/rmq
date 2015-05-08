@@ -61,4 +61,25 @@ describe RMQ::Queue do
     lambda { @queue.find_message_by_id(message_id, {:timeout => 2}) }.should raise_error(RMQ::RMQTimeOutError)
   end
 
+  context 'Browse Queue' do
+
+    it 'should list all messages on the queue' do
+      timestamp = Time.now.to_s
+      @queue.put_message('Everybody' + timestamp)
+      @queue.put_message('Needs Somebody' + timestamp)
+      @queue.put_message('To Love' + timestamp)
+
+      messages = @queue.browse
+
+      expect(messages.size).to eq(3)
+      expect(messages[0].payload).to eq('Everybody' + timestamp)
+      expect(messages[1].payload).to eq('Needs Somebody' + timestamp)
+      expect(messages[2].payload).to eq('To Love' + timestamp)
+
+      expect(@queue.depth).to eq(3)
+
+    end
+
+  end
+
 end

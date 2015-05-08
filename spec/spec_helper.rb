@@ -6,7 +6,7 @@ MQSERVER = "SYSTEM.POET.SVRCONN/TCP/127.0.0.1(1414)"
 module SpecHelper
   DATA = {
       :queue_manager => "POET01DEV",
-      :sample_queue => "POET.WCS.ALLOCATION"
+      :sample_queue => "Brandon.Sucks"
   }
 end
 
