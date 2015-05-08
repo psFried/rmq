@@ -27,7 +27,7 @@ describe RMQ::QueueManager do
     lambda { RMQ::QueueManager::connect(SpecHelper::DATA[:queue_manager]) }.should raise_error(RuntimeError)
   end
 
-  it "should create a new queue" do
+  xit "should create a new queue" do
     @qm = RMQ::QueueManager::connect(SpecHelper::DATA[:queue_manager])
     queue = @qm.create_queue("SAMPLE.QUEUE")
     queue.should_not be_nil
