@@ -30,7 +30,7 @@ describe RMQ::QueueManager do
       begin
         @queueManager.delete_queue(SAMPLE_QUEUE) if !@queueManager.find_queue(SAMPLE_QUEUE).nil?
       rescue
-        puts 'Cannot delete #{SAMPLE_QUEUE}'
+        puts "Cannot delete #{SAMPLE_QUEUE}" 
       end
     end
 
