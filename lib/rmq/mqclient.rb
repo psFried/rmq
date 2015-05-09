@@ -314,12 +314,16 @@ module RMQ
       message_options[:Options] = 0
 
       if accept_truncated_msg
-        message_options[:Options] = GetMessageOptions::MQGMO_ACCEPT_TRUNCATED_MSG | message_options[:Options]
+        message_options[:Options] |= GetMessageOptions::MQGMO_ACCEPT_TRUNCATED_MSG
       end
 
       if options.has_key?(:timeout)
-        message_options[:Options] = GetMessageOptions::MQGMO_WAIT | message_options[:Options]
+        message_options[:Options] |= GetMessageOptions::MQGMO_WAIT
         message_options[:WaitInterval] = options[:timeout] * 1000
+      end
+
+      if options.has_key? :options
+        message_options[:Options] |= options[:options]
       end
 
       message_options

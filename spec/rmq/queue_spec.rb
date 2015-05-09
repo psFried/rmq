@@ -75,16 +75,20 @@ describe RMQ::Queue do
 
     it 'should list all messages on the queue' do
       timestamp = Time.now.to_s
-      @queue.put_message('Everybody' + timestamp)
-      @queue.put_message('Needs Somebody' + timestamp)
-      @queue.put_message('To Love' + timestamp)
+      message1 = 'Everybody' + timestamp
+      message2 = 'Needs Somebody' + timestamp
+      message3 = 'To Love' + timestamp
+
+      @queue.put_message(message1)
+      @queue.put_message(message2)
+      @queue.put_message(message3)
 
       messages = @queue.browse
 
       expect(messages.size).to eq(3)
-      expect(messages[0].payload).to eq('Everybody' + timestamp)
-      expect(messages[1].payload).to eq('Needs Somebody' + timestamp)
-      expect(messages[2].payload).to eq('To Love' + timestamp)
+      expect(messages[0].payload).to eq(message1)
+      expect(messages[1].payload).to eq(message2)
+      expect(messages[2].payload).to eq(message3)
 
       expect(@queue.depth).to eq(3)
     end

@@ -4,7 +4,7 @@ module RMQ
     class GetMessageOptions < FFI::Struct
       MQGMO_STRUC_ID        = "GMO "
       MQGMO_VERSION_1       = 1
-      
+
       # Get Message Options
       MQGMO_WAIT                     = 0x00000001
       MQGMO_NO_WAIT                  = 0x00000000
@@ -37,7 +37,7 @@ module RMQ
       MQGMO_PROPERTIES_COMPATIBILITY = 0x10000000
       MQGMO_PROPERTIES_AS_Q_DEF      = 0x00000000
       MQGMO_NONE                     = 0x00000000
-      
+
       layout :StrucId, [:char, 4],
         :Version, :int32,
         :Options, :int32,
