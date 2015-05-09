@@ -64,11 +64,10 @@ module RMQ
     def browse
       @queue_handle = open_queue(@queue_manager.connection_handle, @queue_name, Constants::MQOO_BROWSE | Constants::MQOO_INPUT_SHARED) if @queue_handle.nil?
       messages = []
-      # message = get_message_from_queue(@queue_manager.connection_handle, @queue_handle, {:Options => Constants::MQGMO_BROWSE_NEXT})
 
       begin
         while true do
-          messages << get_message_from_queue(@queue_manager.connection_handle, @queue_handle, {:Options => Constants::MQGMO_BROWSE_NEXT})
+          messages << get_message_from_queue(@queue_manager.connection_handle, @queue_handle, {:options => Constants::MQGMO_BROWSE_NEXT})
         end
       rescue RMQException
         # Swallow exception and break out of the loop... we finished reading the messages

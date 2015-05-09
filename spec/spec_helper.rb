@@ -11,8 +11,8 @@ module SpecHelper
 end
 
 RSpec.configure do |config|
-  # config.color_enabled = true
-  # config.formatter     = 'documentation'
+  config.color = true
+  config.default_formatter = 'documentation'
 
   config.before(:each) do
     ENV['MQSERVER'] = MQSERVER
