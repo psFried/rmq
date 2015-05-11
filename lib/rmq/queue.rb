@@ -29,16 +29,15 @@ module RMQ
     def get_message(options = {})
       @queue_handle = open_queue(@queue_manager.connection_handle, @queue_name, Constants::MQOO_INPUT_SHARED) if @queue_handle.nil?
 
-      begin
-        begin_time = Time.now.to_i
-        message = get_message_from_queue(@queue_manager.connection_handle, @queue_handle, options)
-      rescue RMQException
-        end_time = Time.now.to_i
+      begin_time = Time.now.to_i
+      message = get_message_from_queue(@queue_manager.connection_handle, @queue_handle, options)
 
+      close_queue(@queue_manager.connection_handle, @queue_handle, Constants::MQCO_NONE)
+      @queue_handle = nil
+
+      if message.nil?
+        end_time = Time.now.to_i
         raise RMQTimeOutError.new if options.has_key?(:timeout) && (end_time - begin_time >= options[:timeout])
-      ensure
-        close_queue(@queue_manager.connection_handle, @queue_handle, Constants::MQCO_NONE)
-        @queue_handle = nil
       end
 
       message
@@ -67,10 +66,16 @@ module RMQ
 
       begin
         while true do
-          messages << get_message_from_queue(@queue_manager.connection_handle, @queue_handle, {:options => Constants::MQGMO_BROWSE_NEXT})
+          message = get_message_from_queue(@queue_manager.connection_handle, @queue_handle, {:options => Constants::MQGMO_BROWSE_NEXT})
+
+          if message.nil?
+            break
+          end
+
+          messages << message
         end
       rescue RMQException
-        # Swallow exception and break out of the loop... we finished reading the messages
+        # TODO: respond to legit failure
       end
 
       close_queue(@queue_manager.connection_handle, @queue_handle, Constants::MQCO_NONE)

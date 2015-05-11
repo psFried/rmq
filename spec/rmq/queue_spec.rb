@@ -73,23 +73,32 @@ describe RMQ::Queue do
 
   context 'Browse Queue' do
 
-    it 'should list all messages on the queue' do
+    before :each do
       timestamp = Time.now.to_s
-      message1 = 'Everybody' + timestamp
-      message2 = 'Needs Somebody' + timestamp
-      message3 = 'To Love' + timestamp
+      @message1 = 'Everybody' + timestamp
+      @message2 = 'Needs Somebody' + timestamp
+      @message3 = 'To Love' + timestamp
 
-      @queue.put_message(message1)
-      @queue.put_message(message2)
-      @queue.put_message(message3)
+      @queue.put_message(@message1)
+      @queue.put_message(@message2)
+      @queue.put_message(@message3)
+    end
+
+    it 'should list all messages on the queue' do
+      messages = @queue.browse
+
+      expect(messages.size).to eq(3)
+      expect(messages[0].payload).to eq(@message1)
+      expect(messages[1].payload).to eq(@message2)
+      expect(messages[2].payload).to eq(@message3)
+    end
+
+    it 'should not remove any messages from the queue' do
+      expect(@queue.depth).to eq(3)
 
       messages = @queue.browse
 
       expect(messages.size).to eq(3)
-      expect(messages[0].payload).to eq(message1)
-      expect(messages[1].payload).to eq(message2)
-      expect(messages[2].payload).to eq(message3)
-
       expect(@queue.depth).to eq(3)
     end
 
