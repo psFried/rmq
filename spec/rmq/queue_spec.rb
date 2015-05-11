@@ -66,8 +66,9 @@ describe RMQ::Queue do
     it 'should put a message with headers onto the queue' do
       body = "test body"
       headers = {'key1'=> 'val1', 'key2' => 'val2'}
-      @queue.put_message(body)
-      
+      @queue.put_message_with_headers(body, headers)
+      message = @queue.get_message_payload
+      message.should == "I want to read this back"
     end
   end
 

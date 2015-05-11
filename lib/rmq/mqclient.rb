@@ -78,6 +78,9 @@ module RMQ
     attach_function :mqai_delete_bag, :mqDeleteBag,
                     [:pointer, :pointer, :pointer], :void
 
+    #memcpy - used for copying payload with headers
+    attach_function :memcpy, [:pointer, :pointer, :size_t], :pointer
+
 
     def create_admin_bag
       completion_code_ptr = FFI::MemoryPointer.new :long

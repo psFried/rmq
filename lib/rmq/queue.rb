@@ -1,4 +1,7 @@
+require_relative 'message_headers'
+
 module RMQ
+
   class Queue
     include MQClient
 
@@ -13,6 +16,42 @@ module RMQ
     def put_message(payload, reply_queue_name = "")
       @queue_handle = open_queue(@queue_manager.connection_handle, @queue_name, Constants::MQOO_OUTPUT) if @queue_handle.nil?
 
+      message_id = put_message_on_queue(@queue_manager.connection_handle, @queue_handle, payload, reply_queue_name)
+
+      close_queue(@queue_manager.connection_handle, @queue_handle, Constants::MQCO_NONE)
+      @queue_handle = nil
+
+      message_id
+    end
+
+    def prepare_headers(length)
+      message_headers = MessageHeaders.new
+      message_headers[:StrucId] = 'RFH '
+      message_headers[:Version] = MessageHeaders::MQRFH_VERSION_2
+      message_headers[:StrucLength] = MessageHeaders::MQRFH_STRUC_LENGTH_FIXED_2 + length
+      message_headers[:Encoding] = MessageHeaders::MQENC_NATIVE
+      message_headers[:CodedCharSetId] = MessageHeaders::MQCCSI_INHERIT
+      message_headers[:Format] = MessageHeaders::MQFMT_NONE
+      message_headers[:Flags] = MessageHeaders::MQRFH_NONE
+      message_headers[:NameValueCCSID] = MessageHeaders::MQRFH_NVENC
+      message_headers
+    end
+
+    def prepare_payload(headers, body)
+      headers_string = convert_headers_to_xmlish(headers)
+      headers_struct = prepare_headers(headers_string.length)
+
+      
+
+    end
+
+    def convert_headers_to_xmlish(headers_hash)
+      headers = headers_hash.collect{|k, v| "<#{k}>#{v}</#{k}>"}.inject(:+)
+    end
+
+    def put_message_with_headers(payload, headers, reply_queue_name = "")
+      @queue_handle = open_queue(@queue_manager.connection_handle, @queue_name, Constants::MQOO_OUTPUT) if @queue_handle.nil?
+      payload = prepare_headers(headers) + payload #
       message_id = put_message_on_queue(@queue_manager.connection_handle, @queue_handle, payload, reply_queue_name)
 
       close_queue(@queue_manager.connection_handle, @queue_handle, Constants::MQCO_NONE)
