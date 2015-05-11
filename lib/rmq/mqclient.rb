@@ -289,6 +289,8 @@ module RMQ
           message_descriptor = prepare_get_message_descriptor(msg_id)
           mqget(connection_handle, queue_handle, message_descriptor, message_options, data_length, buffer_ptr, data_length_ptr, completion_code_ptr, reason_code_ptr)
           raise RMQException.new(completion_code_ptr.read_long, reason_code_ptr.read_long), "Cannot read message again after learning message length" if completion_code_ptr.read_long == MQCC_FAILED
+      elsif (completion_code_ptr.read_long == MQCC_FAILED && reason_code_ptr.read_long == MQRC_NO_MSG_AVAILABLE)
+         return nil
       else
         raise RMQException.new(completion_code_ptr.read_long, reason_code_ptr.read_long), "Cannot learn message length" unless completion_code_ptr.read_long == MQCC_OK
       end
